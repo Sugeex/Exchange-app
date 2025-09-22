@@ -6,9 +6,9 @@ import LOGO3 from "../../assets/img/dabd207d1f724db99929568ed7c64dbe.webp";
 
 const MOCK_DATA = [
   { id: 1, img: LOGO1, name: "Insight", status: "gold" },
-  { id: 2, img: LOGO2, name: "EastChange", status: "silver" },
+  { id: 2, img: LOGO2, name: "East", status: "silver" },
   { id: 3, img: LOGO3, name: "BitOkk" },
-  { id: 4, img: LOGO2, name: "EastChange", status: "silver" },
+  { id: 4, img: LOGO2, name: "East", status: "silver" },
   { id: 5, img: LOGO3, name: "BitOkk" },
 ];
 
@@ -27,7 +27,7 @@ const ListCard = () => {
   };
 
   return (
-    <div className="w-full overflow-hidden text-white">
+    <div className="w-full overflow-hidden text-white font-readex">
       <div className="flex items-center px-[30px] gap-8 text-sm leading-[16px] font-normal">
         <div className="flex flex-col items-start flex-1">
           <p

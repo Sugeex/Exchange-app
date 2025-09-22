@@ -1,7 +1,7 @@
 import Chart from "react-apexcharts";
 import type { ApexOptions } from "apexcharts";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation, useMotionValue } from "framer-motion";
 import STAR from "../../assets/img/Star-1.svg";
 import StarRating from "../StarRaiting/StartRaiting";
 
@@ -15,6 +15,13 @@ const Card = ({ name, img, status }: CardProps) => {
   const percent = 0.72;
   const [rating, setRating] = useState(3);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  const x = useMotionValue(0);
+  const controls = useAnimation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dragThreshold = 60; // минимальный свайп для открытия
+  const closeThreshold = 30;
 
   const series = [
     {
@@ -58,60 +65,89 @@ const Card = ({ name, img, status }: CardProps) => {
       </div>
 
       <motion.div
-        className={`flex w-full bg-[#22283A] min-h-[76px] items-center py-2 px-2 text-white justify-between relative z-10 
+        className={`relative p-[2px] rounded-[12px] 
     ${
       status === "gold"
-        ? "ring-2 ring-yellow-400 shadow-[0_0_10px_rgba(250,204,21,0.7)] rounded-[12px]"
+        ? "bg-gradient-to-r from-yellow-400 via-yellow-200 to-yellow-500 bg-[length:300%_300%] animate-border-shine"
         : status === "silver"
-        ? "ring-2 ring-gray-300 shadow-[0_0_10px_rgba(209,213,219,0.7)] rounded-[12px]"
-        : "rounded-[12px]"
+        ? "bg-gradient-to-r from-gray-400 via-gray-200 to-gray-500 bg-[length:300%_300%] animate-border-shine"
+        : "bg-[#22283A]"
     }
   `}
         drag="x"
         dragConstraints={{ left: -139, right: 0 }}
-        dragElastic={0.1}
+        dragElastic={0.2}
+        dragMomentum={false}
+        style={{ x }}
+        animate={controls}
+        onDragEnd={(_, info) => {
+          if (!isOpen && info.offset.x < -dragThreshold) {
+            // свайп влево — открываем
+            controls.start({
+              x: -139,
+              transition: { type: "spring", stiffness: 300, damping: 30 },
+            });
+            setIsOpen(true);
+          } else if (isOpen && info.offset.x > closeThreshold) {
+            // свайп вправо — закрываем
+            controls.start({
+              x: 0,
+              transition: { type: "spring", stiffness: 300, damping: 30 },
+            });
+            setIsOpen(false);
+          } else {
+            // иначе оставляем текущее состояние (чтобы не дергалось)
+            controls.start({
+              x: isOpen ? -139 : 0,
+              transition: { type: "spring", stiffness: 300, damping: 30 },
+            });
+          }
+        }}
       >
-        <div className="flex flex-col gap-1 w-1/4">
-          {/* <p className="text-sm leading-[18px]">
+        {/* Внутренний слой с тёмным фоном */}
+        <div className="bg-[#22283A] rounded-[10px] flex w-full min-h-[76px] items-center py-2 px-2 text-white justify-between">
+          <div className="flex flex-col gap-1 w-1/4">
+            {/* <p className="text-sm leading-[18px]">
             EGAME<span className="text-[#9096A2] text-[12px]">/USDT</span>
           </p>
           <p className="text-[10px] leading-[14px]">Vol 7 431 281,89</p> */}
 
-          <div className="flex gap-1 items-center">
-            <div className="min-w-8 min-h-8 w-8 h-8">
-              <img src={img} className="w-full h-full rounded-[12px]" />
+            <div className="flex gap-1 items-center">
+              <div className="min-w-8 min-h-8 w-8 h-8">
+                <img src={img} className="w-full h-full rounded-[12px]" />
+              </div>
+              <p className="text-sm leading-[18px]">{name}</p>
             </div>
-            <p className="text-sm leading-[18px]">{name}</p>
           </div>
-        </div>
 
-        <div className="flex flex-col items-center text-[10px] leading-[12px]">
-          <p>Top price 118,12</p>
-          <div className="w-[85px] h-[36px] flex items-center">
-            <Chart
-              options={options}
-              series={series}
-              type="line"
-              height={30}
-              width={85}
-            />
+          <div className="flex flex-col items-center text-[10px] leading-[12px]">
+            <p>Top price 118,12</p>
+            <div className="w-[85px] h-[36px] flex items-center">
+              <Chart
+                options={options}
+                series={series}
+                type="line"
+                height={30}
+                width={85}
+              />
+            </div>
+            <p>Low price 1.115</p>
           </div>
-          <p>Low price 1.115</p>
-        </div>
 
-        <div className="text-[14px] leading-[16px]">30,113.80</div>
+          <div className="text-[14px] leading-[16px]">30,113.80</div>
 
-        <div className="flex flex-col items-center">
-          <div
-            className={`px-1 py-0.5 rounded-[4px] text-[14px] leading-[16px] font-medium ${
-              percent > 0 ? "bg-[#31C451]" : "bg-[#FF6666]"
-            }
+          <div className="flex flex-col items-center">
+            <div
+              className={`px-1 py-0.5 rounded-[4px] text-[14px] leading-[16px] font-medium ${
+                percent > 0 ? "bg-[#31C451]" : "bg-[#FF6666]"
+              }
             `}
-          >
-            {percent > 0 ? "+" : "-"}
-            {percent}%
+            >
+              {percent > 0 ? "+" : "-"}
+              {percent}%
+            </div>
+            <StarRating rating={rating} setRating={setRating} />
           </div>
-          <StarRating rating={rating} setRating={setRating} />
         </div>
       </motion.div>
     </div>
