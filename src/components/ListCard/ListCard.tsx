@@ -27,7 +27,7 @@ const ListCard = () => {
   };
 
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-hidden text-white">
       <div className="flex items-center px-[30px] gap-8 text-sm leading-[16px] font-normal">
         <div className="flex flex-col items-start flex-1">
           <p
