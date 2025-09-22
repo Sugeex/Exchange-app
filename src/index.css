@@ -1,1 +1,51 @@
 @import "tailwindcss";
+
+body {
+  background-color: #121212;
+}
+
+.ant-select-selector {
+  background-color: #22283A !important;
+  color: #FFFFFFE6 !important;
+  font-size: 16px !important;
+  border-radius: 10px !important;
+  border: none !important;
+}
+
+.ant-select-selection-placeholder {
+  color: #9096A2 !important; 
+  font-size: 16px !important;
+}
+
+.ant-select-arrow {
+  color: #9096A2 !important; 
+}
+
+.ant-input {
+  background-color: #22283A !important;
+  color: #FFFFFFE6 !important; 
+  font-size: 16px !important;
+  border-radius: 10px !important;
+  border: none !important;
+}
+
+.ant-input::placeholder {
+ color: #9096A2 !important; 
+}
+
+.ant-input:focus {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-modal .ant-modal-content {
+  background-color: #22283A !important;
+}
+
+.custom-modal .ant-modal-header {
+  background-color: #22283A !important;
+}
+
+.custom-modal .ant-modal-close-x {
+  color: #FFFFFFE6 !important;
+}
