@@ -9,9 +9,10 @@ interface CardProps {
   name: string;
   img: string;
   status?: string;
+  currency: string;
 }
 
-const Card = ({ name, img, status }: CardProps) => {
+const Card = ({ name, img, status, currency }: CardProps) => {
   const percent = 0.72;
   const [rating, setRating] = useState(3);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -54,7 +55,7 @@ const Card = ({ name, img, status }: CardProps) => {
 
   return (
     <div className="relative w-full font-normal">
-      <div className="absolute inset-0 flex items-center justify-end  bg-[#F7931A] rounded-[12px]">
+      <div className="absolute inset-0 flex items-center justify-end  bg-[#436FE2] rounded-[12px]">
         <button
           onClick={() => setIsFavorite(!isFavorite)}
           className="flex flex-col items-center gap-1 text-white font-normal  rounded-md text-sm w-[139px]"
@@ -134,7 +135,10 @@ const Card = ({ name, img, status }: CardProps) => {
             <p>Low price 1.115</p>
           </div>
 
-          <div className="text-[14px] leading-[16px]">30,113.80</div>
+          <div className="flex flex-col text-[14px] leading-[16px]">
+            <span>30,113.80</span>
+            <span className="text-[12px]">{currency}</span>
+          </div>
 
           <div className="flex flex-col items-center">
             <div

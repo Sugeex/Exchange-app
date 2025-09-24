@@ -48,6 +48,10 @@ body {
   background-color: #22283A !important;
 }
 
+.custom-modal .ant-modal-close {
+  top: 18px !important;
+}
+
 .custom-modal .ant-modal-close-x {
   color: #FFFFFFE6 !important;
 }

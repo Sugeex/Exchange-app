@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom";
 import FILTER_ICON from "../../assets/icons/filterIcon.svg";
 import LOC_ICON from "../../assets/icons/loc.svg";
 import ListCard from "../../components/ListCard/ListCard";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const { selectedLocation } = useAppSelector((state) => state.location);
 
   return (
-    <div className="flex flex-col gap-[16px] h-[100vh]  py-2.5">
+    <div className="flex flex-col gap-[16px] h-[100vh] py-2.5">
       <h1 className="text-[#FFFFFFE6] text-[18px] text-center font-medium px-4">
         Exchage App
       </h1>
@@ -20,7 +22,10 @@ const MainPage = () => {
           <div className="flex flex-col">
             <span className="text-[#9096A2] text-[12px]">Your location</span>
             <span className="text-[16px] text-[#FFFFFFE6] font-bold">
-              Norvey, USA
+              {selectedLocation 
+                ? `${selectedLocation.place}, ${selectedLocation.country}`
+                : "Select location"
+              }
             </span>
           </div>
         </div>
